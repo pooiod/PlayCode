@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .container {
+            padding: 25px;
+            border-radius: 5px;
+            /*box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);*/
+            max-width: 600px;
+            width: 80%;
+            border: 1px solid #444;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        a {
+            color: #0074d9;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        strong {
+            font-weight: bold;
+        }
+        
+        em {
+            font-style: italic;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            animation: spinShake 1s ease-in-out;
+            animation-iteration-count: 1;
+        }
+        
+        ul {
+            list-style: disc;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        
+        ul li {
+            font-size: 18px;
+            margin-left: 20px;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: -15px;
+            left: 0px;
+            text-align: center;
+            width: 100%;
+            padding: 5px;
+            border-top: 1px solid #444;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            width: 100%;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @keyframes spinShake {
+            0% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-5deg);
+            }
+            50% {
+                transform: rotate(5deg);
+            }
+            75% {
+                transform: rotate(-5deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+    * {
+      transition: background-color 0.1s, color 0.2s;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="prompt">
+        <h1>Hello, code!</h1> <br> 
+
+        <p>This is a paragraph! Here's how you make links: <br> <a href="plugins">Plugins</a>, <a href="themes/open">Themes</a>.
+        </p>
+
+        <p>Here's how you can make <strong>bold</strong> and <em>italic</em> text.</p>
+
+        <p>Here's how you can add an image:</p>
+        <img src="logo-flat.png" width="100">
+
+        <p>Here's how to make a list:</p>
+
+        <ul>
+            <li>First thing</li>
+            <li>Second thing</li>
+            <li>Third thing</li>
+        </ul>
+
+        <br>
+
+        <p class="footer" id="prompt">To learn more HTML/CSS, check out these <a href="https://neocities.org/tutorials" target="_blank">tutorials</a>!</p>
+        
+      <script> // match the example page with the theme of the editor
+      function getCookie(t) {
+          let e = document.cookie.split(";");
+          for (let i = 0; i < e.length; i++) {
+              let n = e[i].trim();
+              if (n.startsWith(t + "=")) return decodeURIComponent(n.substring(t.length + 1))
+          }
+          return null
+      }
+      function getsetting(t) {
+          try {
+              return JSON.parse(getCookie("settings"))[t]
+          } catch (e) {
+              document.cookie = `settings=${encodeURI("")}`, "" != getCookie("settings") && getCookie("settings") ? window.location.href = "error.html" : window.location.reload()
+          }
+      }
+      var link = document.createElement("link");
+      link.rel = "stylesheet", link.type = "text/css", link.href = getsetting("theme"), document.head.appendChild(link);
+      </script>
+    </div>
+</body>
+</html>
