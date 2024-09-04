@@ -73,7 +73,7 @@
           settings.theme = themelink
           document.cookie = `settings=${JSON.stringify(settings)}`;
       }
-    setTimeout(window.open('/old', '_top'),1000)
+    setTimeout(window.open('/CodePlayground', '_top'),1000)
     //window.open('https://pooiod7.neocities.org/projects/CODE-Playground', '_top');
   }
 </script>
@@ -101,7 +101,7 @@
       <li><button onclick="loadtheme('themes/nonexistant.css');">No color</button></li>
     </ul>
     
-    <a href="/old" class="fixed-button" target="_top" hidden>Load example page</a>
+    <a href="/CodePlayground" class="fixed-button" target="_top" hidden>Load example page</a>
     
     <script> // match the page with the theme of the editor
       function getCookie(t) {
