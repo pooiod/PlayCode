@@ -1,0 +1,37 @@
+{
+  "name": "Code Playground",
+  "short_name": "Code Playground",
+  
+  "description": "A small playground for making code",
+  
+  "display_override": ["window-controls-overlay"],
+  "display": "standalone",
+  
+  "icons": [
+    {
+      "sizes": "any",
+      "type": "image/png",
+      "src": "https://pooiod7.neocities.org/projects/CODE-Playground/logo-flat.png",
+      "purpose": "any"
+    }
+  ],
+  
+  "background_color": "#e6e6e6",
+  "theme_color": "#c9c9c9",
+  
+  "start_url": "/projects/CODE-Playground/",
+  "full_url": "https://pooiod7.neocities.org/projects/CODE-Playground/",
+  
+  "version":{
+    "web": "3.1.2",
+    "win": "0",
+    "mac": "0"
+  },
+  
+  "download":{
+    "win":"",
+    "mac":"",
+    "linux":"",
+    "chrome":""
+  }
+}
