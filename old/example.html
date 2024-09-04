@@ -127,7 +127,7 @@
         <p>Here's how you can make <strong>bold</strong> and <em>italic</em> text.</p>
 
         <p>Here's how you can add an image:</p>
-        <img src="logo-flat.png" width="100">
+        <img src="https://neocities.org/site_thumbnails/79/36/pooiod7/projects/CODE-Playground/logo-flat.png.210x158.webp" width="100">
 
         <p>Here's how to make a list:</p>
 
@@ -141,25 +141,7 @@
 
         <p class="footer" id="prompt">To learn more HTML/CSS, check out these <a href="https://neocities.org/tutorials" target="_blank">tutorials</a>!</p>
         
-      <script> // match the example page with the theme of the editor
-      function getCookie(t) {
-          let e = document.cookie.split(";");
-          for (let i = 0; i < e.length; i++) {
-              let n = e[i].trim();
-              if (n.startsWith(t + "=")) return decodeURIComponent(n.substring(t.length + 1))
-          }
-          return null
-      }
-      function getsetting(t) {
-          try {
-              return JSON.parse(getCookie("settings"))[t]
-          } catch (e) {
-              document.cookie = `settings=${encodeURI("")}`, "" != getCookie("settings") && getCookie("settings") ? window.location.href = "error.html" : window.location.reload()
-          }
-      }
-      var link = document.createElement("link");
-      link.rel = "stylesheet", link.type = "text/css", link.href = getsetting("theme"), document.head.appendChild(link);
-      </script>
+      <script src="matchtheme.js"> // match the example page with the theme of the editor </script>
     </div>
 </body>
 </html>
