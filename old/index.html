@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.json" />
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-  <script src="lang.js"></script>
+  <script src="https://pooiod7.neocities.org/projects/CODE-Playground/lang.js"></script>
   <style> /* try the "dark" theme */
     body {
       background-color: #f2f2f2;
@@ -813,7 +813,7 @@ function ask(text, exampleOption, elmwidth, elmheight) {
     // handle the service worker registration and app installing
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("/projects/CODE-Playground/service-worker.js")
+        .register("service-worker.js")
         .then((reg) => console.log("Service Worker registered", reg))
         .catch((err) => console.error("Service Worker not registered", err));
     } else {
