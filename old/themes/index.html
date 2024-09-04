@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Playground - Themes</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        border: none !important;
+        /*background-color: #f2f2f2;*/
+      }
+
+      h1 {
+        /*color: #333;*/
+        text-align: center;
+      }
+
+      p {
+        color: #666;
+        text-align: center;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      button {
+        display: block;
+        /*color: #333;*/
+        text-decoration: none;
+        background-color: #eee;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        width: 100%;
+      }
+
+      a:hover {
+        /*background-color: #ccc;*/
+      }
+
+      .fixed-button {
+        background-color: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+      }
+    </style>
+<script>
+  function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return decodeURIComponent(cookie.substring(name.length + 1));
+      }
+    }
+    return null;
+  }
+  function loadtheme(themelink) {
+      if (themelink) {
+          let settings = JSON.parse(getCookie("settings"));
+          settings.theme = themelink
+          document.cookie = `settings=${JSON.stringify(settings)}`;
+      }
+    setTimeout(window.open('/old', '_top'),1000)
+    //window.open('https://pooiod7.neocities.org/projects/CODE-Playground', '_top');
+  }
+</script>
+  </head>
+  <body id="prompt">
+    <h1>Code Playground - Themes</h1> <br> 
+
+    <ul>
+      <li><button onclick="loadtheme('themes/default.css');">Default</button></li>
+            
+      <h3>Light themes</h3>
+      
+      <li><button onclick="loadtheme('themes/light.css');">Blinding light</button></li>
+      <li><button onclick="loadtheme('themes/lightblue.css');">Light Blue</button></li>
+      <li><button onclick="loadtheme('themes/replit-light.css');">Replit Light</button></li>
+      
+      <h3>Dark themes</h3>
+      
+      <li><button onclick="loadtheme('themes/dark.css');">Dark</button></li>
+      <li><button onclick="loadtheme('themes/darker.css');">Darker</button></li>
+      <li><button onclick="loadtheme('themes/blue.css');">Blue</button></li>
+      
+      <h3>Joke themes</h3>
+      
+      <li><button onclick="loadtheme('themes/nonexistant.css');">No color</button></li>
+    </ul>
+    
+    <a href="/old" class="fixed-button" target="_top" hidden>Load example page</a>
+    
+    <script> // match the page with the theme of the editor
+      function getCookie(t) {
+          let e = document.cookie.split(";");
+          for (let i = 0; i < e.length; i++) {
+              let n = e[i].trim();
+              if (n.startsWith(t + "=")) return decodeURIComponent(n.substring(t.length + 1))
+          }
+          return null
+      }
+      function getsetting(t) {
+          try {
+              return JSON.parse(getCookie("settings"))[t]
+          } catch (e) {
+              document.cookie = `settings=${encodeURI("")}`, "" != getCookie("settings") && getCookie("settings") ? window.location.href = "error.html" : window.location.reload()
+          }
+      }
+      var link = document.createElement("link");
+      link.rel = "stylesheet", link.type = "text/css", link.href = getsetting("theme"), document.head.appendChild(link);
+    </script>
+  </body>
+</html>
