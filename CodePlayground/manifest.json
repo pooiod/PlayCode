@@ -19,8 +19,8 @@
   "background_color": "#e6e6e6",
   "theme_color": "#c9c9c9",
   
-  "start_url": "/projects/CODE-Playground/",
-  "full_url": "https://pooiod7.neocities.org/projects/CODE-Playground/",
+  "start_url": "/CodePlayground",
+  "full_url": "https://playcode.pages.dev/CodePlayground",
   
   "version":{
     "web": "3.1.2",
