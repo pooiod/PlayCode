@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Code Playground</title>
+  <link rel="icon" type="image/png" href="favicon.ico">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c9c9c9">
+  
+ <!-- PWA stuff -->
+  <link rel="manifest" href="manifest.json" />
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+  <script src="lang.js"></script>
+  <style> /* try the "dark" theme */
+    body {
+      background-color: #f2f2f2;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    #editor {
+      height: calc(100vh - env(titlebar-area-height, 20px) - 2px);
+      top: calc(env(titlebar-area-height, 20px) + 2px);
+      width: 60%;
+      border: none;
+      resize: horizontal;
+      overflow: auto;
+      max-width: 100%;
+      min-width: 0%;
+    }
+
+    #preview {
+      right: 0px;
+      margin-top: calc(env(titlebar-area-height, 20px) + 2px);
+      top: calc(env(titlebar-area-height, 20px) + 2px);
+      height: calc(100vh - env(titlebar-area-height, 20px) - 2px);
+      border: none;
+      flex-grow: 1;
+      /*min-width: 0%;*/
+      max-width: 100%;
+      border: none;
+      border-left: 1px solid #b5b5b5;
+      background-color: #f7f7f7;
+    }
+    
+    button {
+      display: inline-block;
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+
+    button:focus {
+      outline: none;
+    }
+    
+    #buttons {
+      position: fixed; 
+      z-index: 10; 
+      margin: 0px;
+      left: env(titlebar-area-x, 0px); 
+      top: 0px; 
+      width: calc(env(titlebar-area-width, calc(100% + 1px)) - 1px); 
+      height: env(titlebar-area-height, 20px);
+      display: flex;
+      justify-content: space-between;
+      /*overflow-x: auto;*/
+      /*overflow-y: visible;*/
+      /*white-space: nowrap;*/
+    } #buttons::-webkit-scrollbar {
+      height: 5px;
+      width: 1px;
+    }
+    
+    button, .buttonholder {
+      width: 100%;
+      height: env(titlebar-area-height, 20px);
+      margin: 1px;
+      margin-top: 0px;
+      margin-bottom: 1px;
+      border: none;
+      flex: 1;
+    } button {
+      white-space: nowrap;
+    } .buttonholder {
+      margin-right: 2px;
+    }
+    
+    .menucontext {
+      margin: 1px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      border-right: 2px solid;
+      max-height: 50vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 999;
+    }
+    
+    .custom-alert {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #30485f;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      cursor: pointer;
+    }
+    
+    #alert-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      max-width: 500px;
+      z-index: 999999;
+    }
+    
+    .alert {
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      z-index: 9999999;
+      text-shadow:
+        -1px -1px 0 #000,
+        0px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 0px 0 #000,
+        1px 0px 0 #000,
+        -1px 1px 0 #000,
+        0px 1px 0 #000,
+        1px 1px 0 #000;
+    }
+    
+    /* backup theme css (minimum) */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #a3a3a3; 
+    }
+    .ace-editor .ace_marker-layer .ace_selection {
+      background: #ccc;
+    }
+    #prompt {
+      background-color: #f2f2f2;
+    }
+    topbar{
+      color: #e6e6e6;
+    }
+  </style>
+</head>
+
+<body class="editor">
+  <div id="editor"></div>
+
+  <iframe id="preview"></iframe>
+  
+  <div id="alert-container"></div>
+  
+  <topbar hidden>Default meta-theme color</topbar>
+  <topbar2 hidden>Default meta-theme color</topbar2>
+  
+  <script>
+    function togglemenu(buttonId) {
+      if (!buttonId.includes("Menu")) {
+        buttonId = buttonId + 'Menu';
+      }
+      const menuContext = document.getElementById(buttonId);
+
+      if (menuContext.style.display === 'none') {
+          menuContext.style.display = 'block';
+      } else {
+          menuContext.style.display = 'none';
+      }
+    }
+  </script>
+  
+  <div id="buttons">
+    <button id="runButton">Run Code</button>
+    
+    <div class="buttonholder">
+      <button id="FileContext" onclick="togglemenu(this.id);">File</button>
+      <div class="menucontext" id="FileContextMenu" style="display: none;">
+        <button id="installApp" style="display:none;" onclick="togglemenu(this.parentNode.id);">Install app</button>
+        <button id="newFileButton" onclick="togglemenu(this.parentNode.id);">New File</button>
+        <button id="saveButton" onclick="togglemenu(this.parentNode.id);">Save File</button>
+        <button id="loadButton" onclick="togglemenu(this.parentNode.id);">Load File</button>
+      </div>
+    </div>
+    
+    <button id="settingsButton">Open Settings</button>
+  </div>
+  
+  <script>
+      // window.onbeforeunload = function(e) {
+      //   return 'Did you save your code?';
+      // };
+  </script>
+  
+  <script>
+    let logs = [];
+    function createAlert(message, color) {
+      const alertContainer = document.getElementById('alert-container');
+      const alert = document.createElement('div');
+      alert.className = 'alert';
+      alert.innerHTML = message;
+      if (!color) {
+        color = "white"
+      }
+      alert.style.color = color || "white"
+      var log = {
+        text: message,
+        color: color
+      };
+      logs.push(log);
+      alertContainer.appendChild(alert);
+      setTimeout(() => {
+        alert.style.opacity = '1';
+      }, 10);
+    
+      setTimeout(() => {
+        alert.style.opacity = '0';
+        setTimeout(() => {
+          alert.remove();
+        }, 300);
+      }, 9000);
+    }
+    
+    console.log = function(message) {
+      //createAlert(message, 'white');
+    }
+    console.error = function(message) {
+      createAlert(message, '#FFA07A');
+    }
+    console.warn = function(message) {
+      createAlert(message, 'yellow');
+    }
+    window.onerror = function(message, source, lineno, colno, error) {
+      const errorMessage = "Error: " + message + " at " + source + ":" + lineno + ":" + colno;
+      createAlert(errorMessage, 'orange');
+    }
+    window.onwarn = function(message, source, lineno, colno, error) {
+        const warningMessage = "Warning: " + message + " at " + source + ":" + lineno + ":" + colno;
+        createAlert(warningMessage, 'yellow');
+    }
+
+    var themecolor;
+    function changeThemeColor(newColor) {
+      if (!newColor) {
+          var bodyColor = "#" + window.getComputedStyle(document.getElementsByTagName('topbar')[0]).color.match(/\(([^)]+)\)/)[1].split(',').map(x => (+x).toString(16).padStart(2, '0')).join('')
+          var metaTag = document.querySelector('meta[name="theme-color"]');
+          if (metaTag) {
+            themecolor = bodyColor;
+            metaTag.setAttribute('content', bodyColor);
+          }
+      } else {
+        themecolor = newColor;
+        var themeColorMetaTag = document.querySelector('meta[name="theme-color"]').setAttribute("content", newColor);
+      }
+    }
+  </script>
+
+  <script>
+    var cclient = new URLSearchParams(window.location.search).get('client') || "browser";
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      cclient = "app";
+    }
+    const client = cclient;
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+            changeThemeColor();
+        }, 500);
+      changeThemeColor();
+    });
+
+    function addButton(id, text, func) {
+      const buttonContainer = document.getElementById('buttons');
+      const button = document.createElement('button');
+      button.id = id;
+      button.textContent = text;
+      button.addEventListener('click', func);
+      buttonContainer.appendChild(button);
+    }
+    function ButtonText(id, newText) {
+      const button = document.getElementById(id);
+      if (button) {
+        button.textContent = newText;
+      }
+    }
+    function insettings() {
+      return window.location.hash == "#settings"
+    }
+
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+          return decodeURIComponent(cookie.substring(name.length + 1));
+        }
+      }
+      return null;
+    }
+
+    function getsetting(element) {
+      try {
+        return JSON.parse(getCookie('settings'))[element];
+      } catch (error) {
+        document.cookie = `settings=${encodeURI("")}`;
+        if (getCookie('settings') == "" || !getCookie('settings'))  {
+          document.body.style.display = 'none';
+          setTimeout(function () {
+            window.location.href = "error.html";
+          }, 1000)
+        } else {
+          window.location.href = "error.html";
+        }
+      }
+    }
+    
+    const pluginValue = new URLSearchParams(window.location.search).get('plugin');
+    if (pluginValue) {
+      if (window.confirm('Do you want to install the plugin from "' + pluginValue.replace("https://", "plugin:").replace("?codeplaygroundinstallplugin", "").replace("&codeplaygroundinstallplugin", "") + '"?')) {
+        let settings = JSON.parse(getCookie("settings"));
+        settings.plugins.push(pluginValue.replace("https://", "//").replace("?codeplaygroundinstallplugin", "").replace("&codeplaygroundinstallplugin", "").replace("//pooiod7.neocities.org/projects/CODE-Playground/plugins/", "plugin:"));
+        document.cookie = `settings=${JSON.stringify(settings)}`;
+      }
+    const urlmod893 = new URL(window.location.href);
+    urlmod893 .searchParams.delete('plugin');
+    history.replaceState(null, '', urlmod893 .toString());
+    }
+
+    // fix for bad json 
+    if (getCookie("settings")) {
+      try {
+        JSON.parse(getCookie("settings"));
+      } catch (e) {
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() - 1);
+        document.cookie = "settings" + '=; expires=' + expirationDate.toUTCString() + '; path=/';
+      }
+    }
+
+    if (!getCookie('settings') || getCookie('settings') == "") {
+      fetch('defaultsettings.json')
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            window.location.href = "error.html";
+            throw new Error('Failed to fetch default settings');
+          }
+        })
+        .then(defaultSettings => {
+          document.cookie = `settings=${JSON.stringify(defaultSettings)}`;
+          console.log('Default settings fetched and set:', defaultSettings);
+          if (getCookie('settings')) {
+            location.reload();
+          } else {
+            window.location.href = "error.html";
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+
+  <script>
+    // Reload functions 
+    document.addEventListener('keydown', function(event) {
+      if (event.ctrlKey && event.key === 'q') {
+        event.preventDefault();
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() - 1);
+        document.cookie = "settings" + '=; expires=' + expirationDate.toUTCString() + '; path=/';
+        document.cookie = `settings=${encodeURI("")}`;
+        try { // Display message with error catching 
+          editor.setValue('Clearing settings...');
+          window.location.reload();
+        } catch (error) {
+          console.error(error);
+          window.location.reload();
+        }
+        editor.selection.moveCursorTo(0, 0);
+        location.reload();
+      }
+      if (event.ctrlKey && event.key === 'r' && !event.shiftKey) {
+        event.preventDefault();
+        try { // Display message with error catching 
+          editor.setValue('Reloading...');
+          window.location.reload();
+        } catch (error) {
+          console.error(error);
+          window.location.reload();
+        }
+        editor.selection.moveCursorTo(0, 0);
+        location.reload();
+      }
+    });
+    
+    // Button functions
+    document.getElementById("runButton").addEventListener("click", runCode);
+    document.getElementById("saveButton").addEventListener("click", saveCode);
+    document.getElementById("loadButton").addEventListener("click", loadCode);
+    document.getElementById("settingsButton").addEventListener("click", togglesettings);
+    document.getElementById("newFileButton").addEventListener("click", newfile);
+    
+    getsetting("plugins").forEach(function(url) {// Plugins have no sandbox, only install plugins you trust! 
+      var script = document.createElement('script');
+      script.src = url.replace("plugin:", "//pooiod7.neocities.org/projects/CODE-Playground/plugins/");
+      document.head.appendChild(script);
+    });
+
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = getsetting("theme");
+    document.head.appendChild(link);
+
+    // Create the Ace Editor instance
+    var editor = ace.edit("editor");
+    var editormode = "html"; // javascript 
+    editor.getSession().setMode("ace/mode/"+editormode);
+    editor.setTheme({cssClass: "ace-editor", isDark: false})
+
+    editor.container.style.lineHeight = 1.5;
+    editor.renderer.updateFontSize();
+
+    // resizing updates every second
+    setInterval(() => editor.resize(), 1000);
+    
+    function updtemode(mode) {
+      if (mode == "application/json") {
+        mode = "json";
+      } else if (mode == "js") {
+        mode = "javascript";
+      } else if (mode == "md") {
+        mode = "markdown";
+      }
+      
+      editormode = mode;
+      editor.getSession().setMode("ace/mode/"+editormode);
+      
+      //alert(mode)// Debug
+      
+      if (mode == "html" || mode == "javascript" || editormode == "image/svg+xml") {
+        document.getElementById("preview").hidden = false;
+        document.getElementById("runButton").style.display = "block";
+        document.getElementById("editor").style.width = "60%";
+      } else {
+        document.getElementById("preview").hidden = true;
+        document.getElementById("runButton").style.display = "none";
+        document.getElementById("editor").style.width = "100%";
+      }
+      editor.resize()
+    }
+
+    // Enable autocompletion and snippets
+    editor.setOptions(getsetting("options"));
+
+    // Define code snippets for autocomplete
+    ace.require("ace/snippets").snippetManager.register(getsetting("snips"), "javascript");
+
+    // Function to execute the code
+    function runCode() {
+      var code = editor.getValue();
+      if (insettings()) {
+        document.cookie = `settings=${encodeURI(code)}`;
+        location.reload();
+      } else {
+        if (editormode == "html" || editormode == "image/svg+xml") {
+          document.getElementById("runButton").textContent = "Reload Frame"
+          getsetting("libs").forEach(function(url) {
+            code = `<script src="${url}"><\/script>` + code;
+          });
+          code = `<script src="`+getsetting("console")+`"><\/script>` + code;
+          document.getElementById("preview").srcdoc = code;
+        } else if (editormode == "javascript") {
+          document.getElementById("runButton").textContent = "Run Script";
+          let code = ``;// Basic html to fix missing element issues and handle logs 
+          const defaulthtmlcode = `
+<!DOCTYPE html>
+<html>
+  <head>
+  <\/head>
+  <body style="background-color: #f7f7f7;">
+    <script>
+      setTimeout(function() {
+        openconsole();
+      }, 500);
+    <\/script>
+  <\/body>
+<\/html>
+`;
+          code = defaulthtmlcode + `<script>${editor.getValue()}<\/script>`;
+          getsetting("libs").forEach(function(url) {
+            code = `<script src="${url}"><\/script>` + code;
+          });
+          code = `<script src="` + getsetting("console") + `"><\/script>` + code;
+          //console.log(code);
+          document.getElementById("preview").srcdoc = code;
+        } else {
+          document.getElementById("runButton").textContent = "Back To Top"
+          editor.selection.moveCursorTo(0, 0);
+          editor.selection.clearSelection();
+          //console.log("can't run code");
+        }
+      }
+    }
+
+    function saveCode() {
+      var code = editor.getValue();
+      if (filetype == "html") {
+        getsetting("libs").forEach(function(url) {
+          code = `<script lib scr="${url}"><\/script>
+` + code;
+        });
+      }
+      var blob = new Blob([code], {type: "text"});
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      if (insettings()) {
+        a.download = "settings.json";
+      } else {
+        var filetype = editormode;
+        if (filetype == "javascript") {
+          filetype = "js";
+        } else if (filetype == "markdown") {
+          filetype = "md";
+        }else if (filetype == "" || filetype == " " || !filetype) {
+          filetype = "txt";
+        }
+        a.download = "code."+filetype;
+      }
+
+      var event = document.createEvent("MouseEvents");
+      event.initEvent("click", true, false);
+      a.dispatchEvent(event);
+    }
+    function loadCode() {
+      var input = document.createElement("input");
+      input.type = "file";
+      if (insettings()) {
+        input.accept = ".json";
+      } else {
+        input.accept = ".html, .js, .css, .txt, .json, .py, .md, .svg, .csv, .java";
+      }
+
+      input.onchange = function (event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var contents = e.target.result;
+          
+          contents = contents.split('\n');
+          if (contents[0].includes("<script lib ")) {
+              contents.shift();
+          }
+          contents = contents.join('\n');
+
+          editor.setValue(contents);
+          editor.selection.moveCursorTo(0, 0);
+          runCode();
+        };
+        reader.readAsText(file);
+        updtemode(file.type.replace("text/", ""));
+      };
+      input.click();
+    }
+    function newfile() {
+      ask('Choose a file type', 'html').then((userPrompt) => {
+        if (userPrompt !== null) {
+          editor.setValue("");
+          updtemode(userPrompt);
+        }
+      });
+    }
+    
+    document.addEventListener("keydown", function(event) {
+      if (event.ctrlKey && event.key === 'n') {
+        event.preventDefault();
+        newfile();
+      }
+    });
+
+    function togglesettings() {
+      editor.setValue(`Load...`);
+      editor.selection.moveCursorTo(0, 0);
+      if (insettings()) {
+        window.location.hash = "";
+      } else {
+        window.location.hash = "#settings";
+      }
+      location.reload();
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.ctrlKey && e.key === "s") {
+        e.preventDefault();
+        if (insettings()) {
+          runCode()
+        } else {
+          saveCode();
+        }
+      } else if (e.ctrlKey && e.key === "o") {
+        e.preventDefault();
+        loadCode();
+      }
+    });
+    
+        document.body.addEventListener("dragover", function(event) {
+            event.preventDefault();
+        });
+
+        document.body.addEventListener("drop", function(event) {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                  editor.setValue(e.target.result);
+                  editor.selection.moveCursorTo(0, 0);
+                  runCode();
+                };
+                editor.setValue("Loading file...");
+                editor.selection.moveCursorTo(0, 0);
+                reader.readAsText(file);
+                updtemode(file.type.replace("text/", ""));
+            }
+        });
+        
+    setTimeout(() => {
+      if (window.self !== window.top) {
+        document.getElementById('editor').style.width = '1px';
+      }
+    }, 100);
+    
+function ask(text, exampleOption, elmwidth, elmheight) {
+    const promptContainer = document.createElement('div');
+    promptContainer.style.position = 'fixed';
+    promptContainer.style.top = '0';
+    promptContainer.style.left = '0';
+    promptContainer.style.width = '100%';
+    promptContainer.style.height = '100%';
+    promptContainer.style.background = 'rgba(0, 0, 0, 0.1)';
+    promptContainer.style.display = 'flex';
+    promptContainer.style.alignItems = 'center';
+    promptContainer.style.justifyContent = 'center';
+    promptContainer.style.zIndex = '999';
+
+    const promptBox = document.createElement('div');
+    //promptBox.style.background = 'white';
+    promptBox.style.padding = '20px';
+    //promptBox.style.border = '1px solid #ccc';
+    promptBox.id = "prompt";
+    promptBox.style.borderRadius = '5px';
+    promptBox.style.width = elmwidth;
+    promptBox.style.height = elmheight;
+    promptBox.style.fontFamily = 'Arial, sans-serif';
+    promptContainer.appendChild(promptBox);
+
+    const promptText = document.createElement('div');
+    promptText.innerText = text;
+    promptBox.appendChild(promptText);
+
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.value = exampleOption || '';
+    inputField.id = "promptinput";
+    inputField.style.outline = "none";
+    inputField.style.background = "transparent";
+    inputField.style.border = "none";
+    inputField.style.height = "50px";
+    inputField.style.width = "100%";
+    promptBox.appendChild(inputField);
+
+    const okButton = document.createElement('button');
+    okButton.innerText = 'OK';
+    // document.addEventListener("keydown", function(event) {
+    //   if (event.key === 'Enter') {
+    //     if (document.activeElement == inputField) {
+    //       promptContainer.remove();
+    //     }
+    //   }
+    // });
+    okButton.onclick = function () {
+        promptContainer.remove();
+    };
+    promptBox.appendChild(okButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.innerText = 'Cancel';
+    cancelButton.onclick = function () {
+        promptContainer.remove();
+    };
+    promptBox.appendChild(cancelButton);
+
+    document.body.appendChild(promptContainer);
+
+    inputField.focus();
+
+    return new Promise((resolve) => {
+        okButton.onclick = function () {
+            resolve(inputField.value);
+            promptContainer.remove();
+        };
+
+        cancelButton.onclick = function () {
+            resolve(null);
+            promptContainer.remove();
+        };
+    });
+}
+  </script>
+
+  <script>
+    editor.setValue(`Wait...`);
+    //editor.selection.clearSelection();
+    editor.selection.moveCursorTo(0, 0);
+    
+    if (!new URLSearchParams(window.location.search).get('file') && !window.location.hash) {
+      history.replaceState({}, document.title, window.location.pathname + window.location.search);
+      window.history.pushState({}, '', window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'file=example');
+    }
+
+    // Show example code / load settings
+    if (window.location.hash != "#settings") {
+      fetch(new URLSearchParams(window.location.search).get('file') || "data:text/plain;base64,"/* + btoa("")*/)
+        .then(response => response.text())
+        .then(data => {
+          // Set the fetched content in the editor
+          editor.setValue(data);
+          if (window.self !== window.top) {
+            editor.setValue("");
+          }
+          if (window.location.hash) {
+            editor.setValue(decodeURIComponent(window.location.hash.substring(1)));
+          }
+          editor.selection.moveCursorTo(0, 0);
+          if (new URLSearchParams(window.location.search).get('file').includes("/scratch/")) {
+            updtemode("javascript")
+            
+          //setTimeout(() => {
+            document.getElementById("runButton").style.display = "none";
+            
+            document.getElementById("preview").hidden = true;
+            
+        document.getElementById("editor").style.width = "100%";
+        editor.resize()
+          //}, 100);
+            } else {
+              if (new URLSearchParams(window.location.search).get('file').includes(".js")) {
+            updtemode("javascript")
+              }
+          runCode();
+          if (new URLSearchParams(window.location.search).get('file') == "example") {history.replaceState(null, '', location.href.replace(/(\?|&)file=example/g, ''))};
+          }
+        })
+        .catch(error => {
+          editor.setValue(``);
+          if (window.location.hash) {
+            editor.setValue(decodeURIComponent(window.location.hash.substring(1)));
+            runCode();
+          }
+          console.log('Error: could not fetch file      ', error);
+        });
+    } else {
+      var cookie = getCookie('settings');
+      if (cookie) {
+        editor.setValue(JSON.stringify(JSON.parse(getCookie('settings')), null, 2));
+      } else {
+        editor.setValue("Unknown load error");
+        editor.selection.moveCursorTo(0, 0);
+      }
+      document.title = "Code Playground - Settings";
+      document.getElementById("preview").hidden = true;
+      document.getElementById("editor").style.width = "100%";
+      editor.selection.moveCursorTo(0, 0);
+      editor.getSession().setMode("ace/mode/json");
+      editor.resize();
+      document.getElementById("saveButton").textContent = "Export JSON"
+      document.getElementById("loadButton").textContent = "Import JSON"
+      document.getElementById("settingsButton").textContent = "Close Settings"
+      document.getElementById("runButton").textContent = "Update Settings"
+    }
+  </script>
+  
+  <script>
+    // handle the service worker registration and app installing
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/projects/CODE-Playground/service-worker.js")
+        .then((reg) => console.log("Service Worker registered", reg))
+        .catch((err) => console.error("Service Worker not registered", err));
+    } else {
+      console.warn("Service Worker not supported in this browser");
+    }
+    
+    var installButton = document.getElementById('installApp');
+    
+    var installPrompt;
+    
+    window.addEventListener("beforeinstallprompt", (event) => {
+      console.log(event);
+      event.preventDefault();
+      installPrompt = event;
+      installButton.style.display = "block";
+    });
+        
+    installButton.addEventListener("click", async () => {
+      if (!installPrompt) {
+        return;
+      }
+      const result = await installPrompt.prompt();
+      console.log(`Install prompt was: ${result.outcome}`);
+      installPrompt = null;
+      installButton.style.display = "none";
+    });
+  </script>
+</body>
+</html>
