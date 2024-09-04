@@ -1,0 +1,42 @@
+
+{
+  "libs": [
+    "https://pooiod7.neocities.org/snips/libs.js",
+    "https://code.jquery.com/jquery-3.7.1.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
+  ],
+  "plugins": [],
+  "theme": "themes/default.css",
+  "console": "https://pooiod7.neocities.org/projects/CODE-Playground/plugins/eruda.js",
+  "snips": [
+    {
+      "name": "console.log()",
+      "content": "console.log(${1:})",
+      "scope": "javascript"
+    },
+    {
+      "name": "isJSON()",
+      "content": "isJSON(${1:})",
+      "scope": "javascript"
+    },
+    {
+      "name": "tostring(obj)",
+      "content": "tostring(${1:})",
+      "scope": "javascript"
+    }
+  ],
+  "options": {
+    "enableBasicAutocompletion": true,
+    "enableLiveAutocompletion": false,
+    "autoScrollEditorIntoView": true,
+    "copyWithEmptySelection": false,
+    "highlightActiveLine": true,
+    "showInvisibles": false,
+    "scrollPastEnd": true,
+    "showGutter": true,
+    "fontSize": "13px",
+    "useWorker": true,
+    "tabSize": 2,
+    "wrap": true
+  }
+}
