@@ -1,2 +1,2 @@
 # PlayCode
-Basically CodePlayground2, but also has a mirror for COdePlayground1
+Basically CodePlayground2, but also has a mirror for CodePlayground1
