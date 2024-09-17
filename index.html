@@ -9,30 +9,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
     <style>
-        /* Reset body style */
+        /* Reset body and html style */
         body, html {
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
 
-        /* Navbar styles */
-        nav {
+        /* Navbar */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background-color: #333;
+            padding: 10px 20px;
             color: white;
-            padding: 10px;
-            font-family: Arial, sans-serif;
         }
 
-        /* Dropdown styles */
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Dropdown styling */
         .dropdown {
             position: relative;
             display: inline-block;
+        }
+
+        .dropdown button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .dropdown button:hover {
+            background-color: #444;
         }
 
         .dropdown-content {
@@ -40,7 +58,7 @@
             position: absolute;
             background-color: #f9f9f9;
             min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
 
@@ -59,24 +77,11 @@
             display: block;
         }
 
-        .dropdown:hover .dropbtn {
-            background-color: #555;
-        }
-
-        .dropbtn {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-
         /* Main container for the editor */
         #editor-container {
             position: absolute;
             left: 0;
-            top: 50px; /* Adjusted for the height of the navbar */
+            top: 50px; /* Adjust for navbar height */
             bottom: 0;
             right: 500px; /* Subtract the width of the right panel */
         }
@@ -90,7 +95,7 @@
         #right-panel {
             position: absolute;
             right: 0;
-            top: 50px; /* Adjusted for the height of the navbar */
+            top: 0;
             bottom: 0;
             width: 500px;
             background-color: #f1f1f1;
@@ -121,27 +126,28 @@
         button:hover {
             background-color: #218838;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Navbar with runtime dropdown -->
-    <nav>
-        <div><strong>PlayCode</strong></div>
+    <!-- Navbar with dropdown -->
+    <div class="navbar">
+        <h1>PlayCode</h1>
         <div class="dropdown">
-            <button class="dropbtn">Select Runtime</button>
+            <button>Runtime ▼</button>
             <div class="dropdown-content">
-                <a href="#" onclick="selectRuntime('PlayRunner')">PlayRunner</a>
-                <a href="#" onclick="selectRuntime('Scratch')">Scratch</a>
+                <a href="#">PlayRunner</a>
+                <a href="#">Scratch</a>
             </div>
         </div>
-    </nav>
+    </div>
 
+    <!-- Editor container -->
     <div id="editor-container">
         <textarea id="editor"></textarea>
     </div>
 
+    <!-- Control panel on the right -->
     <div id="right-panel">
         <h2>Control Panel</h2>
         <div id="controls">
@@ -186,11 +192,6 @@ end`;
             const code = editor.getValue();
             alert("Lua code executed:\n" + code);
         });
-
-        // Runtime selection handler
-        function selectRuntime(runtime) {
-            alert('Selected runtime: ' + runtime);
-        }
     </script>
 </body>
 </html>
