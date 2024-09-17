@@ -4,87 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PLayCode - Lua Editor</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.css">
+    
+    <!-- Include CodeMirror CSS and Lua Mode -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
     <style>
+        /* Custom styles for the editor */
         body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1e1e1e;
-            color: #c0c0c0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        .editor-container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        #editor-container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #61dafb;
-            text-shadow: 2px 2px 4px #000;
+            text-align: center;
+            color: #333;
         }
 
         #editor {
-            width: 80%;
-            height: 70vh;
-            background: #2d2d2d;
-            border: 1px solid #444;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            padding: 10px;
+            border: 1px solid #ccc;
+            height: 500px;
         }
 
-        .CodeMirror {
-            height: 100%;
-            font-size: 1rem;
-            color: #fff;
-            background: #2d2d2d;
-            border-radius: 8px;
+        /* Style the buttons and layout */
+        #controls {
+            text-align: center;
+            margin-top: 10px;
         }
 
-        .CodeMirror-lines {
-            padding: 5px;
+        button {
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
         }
 
-        .CodeMirror-gutters {
-            background: #1e1e1e;
-            border-right: 1px solid #444;
+        button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
 
-<div class="editor-container">
-    <h1>PLayCode - Lua Editor</h1>
-    <textarea id="editor"></textarea>
-</div>
+    <div id="editor-container">
+        <h1>PLayCode - Lua Editor</h1>
+        <textarea id="editor"></textarea>
+        <div id="controls">
+            <button id="runCode">Run Code</button>
+        </div>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/mode/lua/lua.min.js"></script>
-<script>
-    const defaultLuaCode = `-- Lua Sample Code
-function greet(name)
-    return "Hello, " .. name
-end
+    <!-- Include CodeMirror JS and Lua mode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/lua/lua.min.js"></script>
 
-print(greet("World"))`;
+    <script>
+        // Initialize CodeMirror editor
+        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: 'lua',
+            lineNumbers: true,
+            theme: 'eclipse', // Light mode theme
+        });
 
-    const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
-        lineNumbers: true,
-        mode: 'lua',
-        theme: 'dracula',
-        indentUnit: 4,
-        smartIndent: true,
-        matchBrackets: true
-    });
+        // Default Lua code snippet
+        const defaultLuaCode = `-- This is a default Lua snippet
+print("Hello from Lua!")
+for i = 1, 5 do
+    print("Number: " .. i)
+end`;
 
-    editor.setValue(defaultLuaCode);
-</script>
+        // Set default Lua code
+        editor.setValue(defaultLuaCode);
 
+        // Button event listener
+        document.getElementById('runCode').addEventListener('click', function() {
+            const code = editor.getValue();
+            alert("Lua code executed:\n" + code);
+        });
+    </script>
 </body>
 </html>
