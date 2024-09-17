@@ -1,1 +1,134 @@
-e
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayCode</title>
+    
+    <!-- Include CodeMirror CSS and Lua Mode -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
+    <style>
+        /* Reset body style */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Main container for the editor */
+        #editor-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 500px; /* Subtract the width of the right panel */
+        }
+
+        #editor {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Box on the right side */
+        #right-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 500px;
+            background-color: #f1f1f1;
+            border-left: 1px solid #ccc;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+
+        /* Basic styles for the box content */
+        #controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="editor-container">
+        <h1>PlayCode</h1>
+        <textarea id="editor"></textarea>
+    </div>
+
+    <div id="right-panel">
+        <h2>Control Panel</h2>
+        <div id="controls">
+            <button id="runCode">Run Code</button>
+        </div>
+    </div>
+
+    <!-- Include CodeMirror JS and Lua mode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/lua/lua.min.js"></script>
+
+    <script>
+        // Initialize CodeMirror editor
+        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: 'lua',
+            lineNumbers: true,
+            theme: 'eclipse', // Light mode theme
+        });
+
+        // Resize the editor to adapt to the available space
+        function resizeEditor() {
+            const editorContainer = document.getElementById('editor-container');
+            editor.setSize(editorContainer.offsetWidth, editorContainer.offsetHeight);
+        }
+
+        // Listen for window resize to adjust editor size dynamically
+        window.addEventListener('resize', resizeEditor);
+        resizeEditor(); // Initial resize
+
+        // Default Lua code snippet
+        const defaultLuaCode = `-- This is a default Lua snippet
+print("Hello from Lua!")
+for i = 1, 5 do
+    print("Number: " .. i)
+end`;
+
+        // Set default Lua code
+        editor.setValue(defaultLuaCode);
+
+        // Button event listener
+        document.getElementById('runCode').addEventListener('click', function() {
+            const code = editor.getValue();
+            alert("Lua code executed:\n" + code);
+        });
+    </script>
+</body>
+</html>
