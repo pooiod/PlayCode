@@ -19,63 +19,43 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Navbar styles */
+        /* Navbar style */
         #navbar {
             position: absolute;
             top: 0;
             left: 0;
-            right: 500px; /* Subtract the width of the right panel */
+            right: 500px; /* Space for the right panel */
             background-color: #333;
             color: white;
+            padding: 10px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            z-index: 1000;
+            justify-content: space-between;
         }
 
         #navbar h1 {
             margin: 0;
+            font-size: 24px;
         }
 
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        #navbar select {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 4px;
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            right: 0;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-content a:hover {
+        #navbar select option {
             background-color: #f1f1f1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown:hover .dropbtn {
-            background-color: #3e8e41;
+            color: black;
         }
 
         /* Main container for the editor */
         #editor-container {
             position: absolute;
-            top: 40px; /* Adjust to fit below the navbar */
+            top: 40px; /* Space for the navbar */
             left: 0;
             bottom: 0;
             right: 500px; /* Subtract the width of the right panel */
@@ -128,13 +108,10 @@
 
     <div id="navbar">
         <h1>PlayCode</h1>
-        <div class="dropdown">
-            <button class="dropbtn">Select Runtime</button>
-            <div class="dropdown-content">
-                <a href="#">PlayRunner</a>
-                <a href="#">Scratch</a>
-            </div>
-        </div>
+        <select id="runtime-select">
+            <option value="PlayRunner">PlayRunner</option>
+            <option value="Scratch">Scratch</option>
+        </select>
     </div>
 
     <div id="editor-container">
@@ -184,6 +161,12 @@ end`;
         document.getElementById('runCode').addEventListener('click', function() {
             const code = editor.getValue();
             alert("Lua code executed:\n" + code);
+        });
+
+        // Dropdown change event listener
+        document.getElementById('runtime-select').addEventListener('change', function() {
+            const selectedRuntime = this.value;
+            alert("Selected runtime: " + selectedRuntime);
         });
     </script>
 </body>
