@@ -9,24 +9,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
     <style>
-        /* Reset body and html style */
+        /* Reset body style */
         body, html {
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            font-family: Arial, sans-serif;
         }
 
-        /* Navbar */
+        /* Navbar styles */
         .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #333;
-            padding: 10px 20px;
-            color: white;
         }
 
         .navbar h1 {
@@ -34,23 +33,24 @@
             font-size: 24px;
         }
 
-        /* Dropdown styling */
+        /* Dropdown menu */
         .dropdown {
             position: relative;
             display: inline-block;
         }
 
         .dropdown button {
-            background-color: #333;
+            background-color: #28a745;
             color: white;
-            padding: 10px;
+            padding: 10px 20px;
             border: none;
             cursor: pointer;
             font-size: 16px;
+            border-radius: 5px;
         }
 
         .dropdown button:hover {
-            background-color: #444;
+            background-color: #218838;
         }
 
         .dropdown-content {
@@ -81,7 +81,7 @@
         #editor-container {
             position: absolute;
             left: 0;
-            top: 50px; /* Adjust for navbar height */
+            top: 50px; /* Adjusted for navbar height */
             bottom: 0;
             right: 500px; /* Subtract the width of the right panel */
         }
@@ -95,7 +95,7 @@
         #right-panel {
             position: absolute;
             right: 0;
-            top: 0;
+            top: 50px; /* Adjusted for navbar height */
             bottom: 0;
             width: 500px;
             background-color: #f1f1f1;
@@ -130,24 +130,24 @@
 </head>
 <body>
 
-    <!-- Navbar with dropdown -->
+    <!-- Navbar with Dropdown -->
     <div class="navbar">
         <h1>PlayCode</h1>
         <div class="dropdown">
-            <button>Runtime ▼</button>
+            <button>Choose Runtime</button>
             <div class="dropdown-content">
-                <a href="#">PlayRunner</a>
-                <a href="#">Scratch</a>
+                <a href="#" id="playRunner">PlayRunner</a>
+                <a href="#" id="scratchRunner">Scratch</a>
             </div>
         </div>
     </div>
 
-    <!-- Editor container -->
+    <!-- Main editor container -->
     <div id="editor-container">
         <textarea id="editor"></textarea>
     </div>
 
-    <!-- Control panel on the right -->
+    <!-- Control panel box on the right -->
     <div id="right-panel">
         <h2>Control Panel</h2>
         <div id="controls">
@@ -191,6 +191,15 @@ end`;
         document.getElementById('runCode').addEventListener('click', function() {
             const code = editor.getValue();
             alert("Lua code executed:\n" + code);
+        });
+
+        // Dropdown runtime selection event handlers
+        document.getElementById('playRunner').addEventListener('click', function() {
+            alert('PlayRunner runtime selected');
+        });
+
+        document.getElementById('scratchRunner').addEventListener('click', function() {
+            alert('Scratch runtime selected');
         });
     </script>
 </body>
