@@ -17,14 +17,12 @@
             height: 100vh;
             overflow: hidden;
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Navbar style */
         #navbar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 500px; /* Space for the right panel */
             background-color: #333;
             color: white;
             padding: 10px;
@@ -32,6 +30,7 @@
             align-items: center;
             justify-content: space-between;
             z-index: 1; /* Ensure navbar is above other elements */
+            flex-shrink: 0; /* Prevent navbar from shrinking */
         }
 
         #navbar h1 {
@@ -53,13 +52,19 @@
             color: black;
         }
 
+        /* Container for the editor and right panel */
+        #main-content {
+            display: flex;
+            flex: 1;
+            position: relative;
+            width: 100%;
+        }
+
         /* Main container for the editor */
         #editor-container {
-            position: absolute;
-            top: 40px; /* Space for the navbar */
-            left: 0;
-            right: 500px; /* Space for the right panel */
-            bottom: 0;
+            flex: 1;
+            margin-left: 0;
+            margin-right: 500px; /* Space for the right panel */
         }
 
         #editor {
@@ -115,14 +120,16 @@
         </select>
     </div>
 
-    <div id="editor-container">
-        <textarea id="editor"></textarea>
-    </div>
+    <div id="main-content">
+        <div id="editor-container">
+            <textarea id="editor"></textarea>
+        </div>
 
-    <div id="right-panel">
-        <h2>Control Panel</h2>
-        <div id="controls">
-            <button id="runCode">Run Code</button>
+        <div id="right-panel">
+            <h2>Control Panel</h2>
+            <div id="controls">
+                <button id="runCode">Run Code</button>
+            </div>
         </div>
     </div>
 
