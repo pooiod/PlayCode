@@ -21,16 +21,17 @@
 
         /* Navbar style */
         #navbar {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 500px; /* Space for the right panel */
             background-color: #333;
             color: white;
-            padding: 10px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            z-index: 1000; /* Ensure the navbar stays on top */
         }
 
         #navbar h1 {
@@ -41,10 +42,11 @@
         #navbar select {
             background-color: #444;
             color: white;
-            border: none;
-            padding: 5px;
+            border: 1px solid #555;
+            padding: 5px 10px;
             font-size: 16px;
             border-radius: 4px;
+            cursor: pointer;
         }
 
         #navbar select option {
@@ -58,17 +60,18 @@
             top: 40px; /* Space for the navbar */
             left: 0;
             bottom: 0;
-            right: 500px; /* Subtract the width of the right panel */
+            right: 500px; /* Space for the right panel */
+            padding: 10px;
         }
 
         #editor {
-            height: 100%;
+            height: calc(100vh - 40px); /* Adjust height to account for the navbar */
             width: 100%;
         }
 
         /* Box on the right side */
         #right-panel {
-            position: absolute;
+            position: fixed;
             right: 0;
             top: 0;
             bottom: 0;
@@ -80,6 +83,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 20px;
         }
 
         /* Basic styles for the box content */
@@ -101,7 +109,6 @@
         button:hover {
             background-color: #218838;
         }
-
     </style>
 </head>
 <body>
