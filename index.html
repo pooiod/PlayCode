@@ -3,71 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayCode - Lua Editor</title>
-
+    <title>PlayCode</title>
+    
     <!-- Include CodeMirror CSS and Lua Mode -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
-
     <style>
-        /* Reset default margin and padding */
-        * {
+        /* Reset body style */
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
             height: 100%;
-            font-family: Arial, sans-serif;
             display: flex;
         }
 
-        /* Main container with editor and right panel */
-        #main-container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Editor section */
+        /* Main editor and container layout */
         #editor-container {
-            flex-grow: 1; /* Take up remaining space */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
             height: 100%;
         }
 
         #editor {
+            flex-grow: 1;
             height: 100%;
-            width: 100%;
-            border: none;
         }
 
-        /* Right panel with resizable box */
+        /* Box on the right side */
         #right-panel {
             width: 500px;
-            height: 100%;
-            border-left: 2px solid #ccc;
-            background-color: #f4f4f4;
+            min-width: 300px; /* Allow resizing but maintain a minimum width */
+            background-color: #f1f1f1;
+            border-left: 1px solid #ccc;
             padding: 20px;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Resizable box */
-        #resize-box {
-            flex-grow: 1;
-            border: 2px dashed #aaa;
-            resize: horizontal;
-            overflow: auto;
-            min-width: 200px;
-            max-width: 700px;
-            padding: 10px;
+        h1 {
+            margin: 0;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            text-align: center;
         }
 
-        /* Controls */
+        /* Basic styles for the box content */
         #controls {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         button {
@@ -83,22 +70,20 @@
         button:hover {
             background-color: #218838;
         }
+
     </style>
 </head>
 <body>
 
-    <div id="main-container">
-        <div id="editor-container">
-            <textarea id="editor"></textarea>
-        </div>
-        <div id="right-panel">
-            <div id="resize-box">
-                <h2>Resizable Box</h2>
-                <p>This box can be resized horizontally. The editor will adapt to its size.</p>
-            </div>
-            <div id="controls">
-                <button id="runCode">Run Code</button>
-            </div>
+    <div id="editor-container">
+        <h1>PlayCode</h1>
+        <textarea id="editor"></textarea>
+    </div>
+
+    <div id="right-panel">
+        <h2>Control Panel</h2>
+        <div id="controls">
+            <button id="runCode">Run Code</button>
         </div>
     </div>
 
@@ -114,6 +99,16 @@
             theme: 'eclipse', // Light mode theme
         });
 
+        // Make the editor take up the remaining space
+        function resizeEditor() {
+            const editorContainer = document.getElementById('editor-container');
+            editor.setSize(editorContainer.offsetWidth, editorContainer.offsetHeight - 40); // Account for the header
+        }
+
+        // Listen for window resize to adjust editor size dynamically
+        window.addEventListener('resize', resizeEditor);
+        resizeEditor(); // Initial resize
+
         // Default Lua code snippet
         const defaultLuaCode = `-- This is a default Lua snippet
 print("Hello from Lua!")
@@ -124,24 +119,11 @@ end`;
         // Set default Lua code
         editor.setValue(defaultLuaCode);
 
-        // Resize the editor when the window or right panel is resized
-        function resizeEditor() {
-            const editorContainer = document.getElementById('editor-container');
-            editor.setSize(editorContainer.offsetWidth, editorContainer.offsetHeight);
-        }
-
-        // Add event listener for window resize
-        window.addEventListener('resize', resizeEditor);
-
-        // Initial resize
-        resizeEditor();
-
         // Button event listener
         document.getElementById('runCode').addEventListener('click', function() {
             const code = editor.getValue();
             alert("Lua code executed:\n" + code);
         });
     </script>
-
 </body>
 </html>
