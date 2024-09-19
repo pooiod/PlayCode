@@ -3,7 +3,8 @@
   "libs": [
     "https://pooiod7.neocities.org/snips/libs.js",
     "https://code.jquery.com/jquery-3.7.1.min.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
+    "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js",
+    "https://pooiod7.neocities.org/snips/GenerativeAI.js"
   ],
   "plugins": [],
   "theme": "themes/default.css",
@@ -22,6 +23,57 @@
     {
       "name": "tostring(obj)",
       "content": "tostring(${1:})",
+      "scope": "javascript"
+    },
+    
+    {
+      "name": "gpt.int(prompt, model)",
+      "content": "gpt.int(${1:}, ${2:})",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.exportBot()",
+      "content": "gpt.exportBot()",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.models",
+      "content": "gpt.models",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.model",
+      "content": "gpt.model",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.api",
+      "content": "gpt.api",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.memory",
+      "content": "gpt.memory",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.inform(txt)",
+      "content": "gpt.inform(${1:})",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.prompt(prompt, image).then(result => {})",
+      "content": "gpt.prompt(${1:}, ${2:}).then(result => {\n\t${3:}\n});",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.toCode(lang, code)",
+      "content": "gpt.toCode(${1:}, ${2:})",
+      "scope": "javascript"
+    },
+    {
+      "name": "gpt.generateImage(prompt).then(url => {})",
+      "content": "gpt.generateImage(${1:}).then(url => {\n\t${2:}\n});",
       "scope": "javascript"
     }
   ],
