@@ -1,4 +1,3 @@
-
 {
   "libs": [
     "https://pooiod7.neocities.org/snips/libs.js",
@@ -8,7 +7,7 @@
   ],
   "plugins": [],
   "theme": "themes/default.css",
-  "console": "https://pooiod7.neocities.org/projects/CODE-Playground/plugins/eruda.js",
+  "console": "plugins/eruda.js",
   "snips": [
     {
       "name": "console.log()",
@@ -25,7 +24,6 @@
       "content": "tostring(${1:})",
       "scope": "javascript"
     },
-    
     {
       "name": "gpt.int(prompt, model)",
       "content": "gpt.int(${1:}, ${2:})",
@@ -43,12 +41,12 @@
     },
     {
       "name": "gpt.model",
-      "content": "gpt.model",
+      "content": "gpt.model(${1:})",
       "scope": "javascript"
     },
     {
       "name": "gpt.api",
-      "content": "gpt.api",
+      "content": "gpt.api(${1:}, ${2:})",
       "scope": "javascript"
     },
     {
@@ -63,7 +61,7 @@
     },
     {
       "name": "gpt.prompt(prompt, image).then(result => {})",
-      "content": "gpt.prompt(${1:}, ${2:}).then(result => {\n\t${3:}\n});",
+      "content": "gpt.prompt(${1:}, ${2:}).then(result => {})",
       "scope": "javascript"
     },
     {
@@ -72,8 +70,13 @@
       "scope": "javascript"
     },
     {
+      "name": "gpt.gemini(prompt).then(result => {})",
+      "content": "gpt.gemini(${1:}).then(result => {})",
+      "scope": "javascript"
+    },
+    {
       "name": "gpt.generateImage(prompt).then(url => {})",
-      "content": "gpt.generateImage(${1:}).then(url => {\n\t${2:}\n});",
+      "content": "gpt.generateImage(${1:}).then(url => {})",
       "scope": "javascript"
     }
   ],
