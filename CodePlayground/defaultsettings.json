@@ -61,7 +61,7 @@
     },
     {
       "name": "gpt.prompt(prompt, image).then(result => {})",
-      "content": "gpt.prompt(${1:}, ${2:}).then(result => {})",
+      "content": "gpt.prompt(${1:}, ${2:}).then(result => {${3:}})",
       "scope": "javascript"
     },
     {
@@ -71,12 +71,12 @@
     },
     {
       "name": "gpt.gemini(prompt).then(result => {})",
-      "content": "gpt.gemini(${1:}).then(result => {})",
+      "content": "gpt.gemini(${1:}).then(result => {${3:}})",
       "scope": "javascript"
     },
     {
       "name": "gpt.generateImage(prompt).then(url => {})",
-      "content": "gpt.generateImage(${1:}).then(url => {})",
+      "content": "gpt.generateImage(${1:}).then(url => {${3:}})",
       "scope": "javascript"
     }
   ],
