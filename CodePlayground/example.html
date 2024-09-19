@@ -141,14 +141,19 @@
             <li>Second thing</li>
             <li>Third thing</li>
           </ul>
+          
+          <script> // random ai thing because why not
+            function aifunc() {
+              document.getElementById("snip").innerHTML = "";
+              var prompt = window.prompt("what html do you want to see?");
+              document.getElementById("snip").innerHTML = "Loading...";
+              gpt.prompt("Make some html (single file) based on the following prompt:"+prompt)
+              .then(response => {
+                document.getElementById("snip").innerHTML = gpt.toCode("html", response);
+              });
+            }
+          </script><br><button onclick="aifunc();">I am a button</button>
         </div>
-        
-        <script> // random ai thingy because it's poular right now
-          gpt.prompt("Make a random basic html snip (small, semi-complex snip, not a page, not form).")
-          .then(response => {
-            document.getElementById("snip").innerHTML = "<h5>Random HTML:</h5>" + gpt.toCode("html", response);
-          });
-        </script>
         
       <script> // match the example page with the theme of the editor
         function getCookie(t) {
