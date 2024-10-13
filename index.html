@@ -3,179 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayCode</title>
-    
-    <!-- Include CodeMirror CSS and Lua Mode -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
+    <title>Stylish Layout</title>
     <style>
-        /* Reset body style */
-        body, html {
+        body {
             margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
         }
-
-        /* Navbar style */
-        #navbar {
-            background-color: #333;
+        nav {
+            background-color: #4CAF50;
             color: white;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1; /* Ensure navbar is above other elements */
-            flex-shrink: 0; /* Prevent navbar from shrinking */
-        }
-
-        #navbar h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        #navbar select {
-            background-color: #444;
-            color: white;
-            border: none;
-            padding: 5px;
-            font-size: 16px;
-            border-radius: 4px;
-        }
-
-        #navbar select option {
-            background-color: #f1f1f1;
-            color: black;
-        }
-
-        /* Container for the editor and right panel */
-        #main-content {
-            display: flex;
-            flex: 1;
-            position: relative;
-            width: 100%;
-        }
-
-        /* Main container for the editor */
-        #editor-container {
-            flex: 1;
-            margin-left: 0;
-            margin-right: 500px; /* Space for the right panel */
-        }
-
-        #editor {
-            height: 100%;
-            width: 100%;
-        }
-
-        /* Box on the right side */
-        #right-panel {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 500px;
-            background-color: #f1f1f1;
-            border-left: 1px solid #ccc;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-        }
-
-        /* Basic styles for the box content */
-        #controls {
+            padding: 15px;
             text-align: center;
-            margin-top: 20px;
         }
-
-        button {
-            background-color: #28a745;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
+        .container {
+            display: flex;
+            height: calc(100vh - 60px);
         }
-
-        button:hover {
-            background-color: #218838;
+        .big-box {
+            flex: 1;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .small-box {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .top-box {
+            height: 400px;
+            background-color: #e7e7e7;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        .bottom-box {
+            flex: 1;
+            background-color: #d3d3d3;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
-
-    <div id="navbar">
-        <h1>PlayCode</h1>
-        <select id="runtime-select">
-            <option value="PlayRunner">PlayRunner</option>
-            <option value="Scratch">Scratch</option>
-        </select>
-    </div>
-
-    <div id="main-content">
-        <div id="editor-container">
-            <textarea id="editor"></textarea>
+    <nav>
+        <h1>My Stylish Page</h1>
+    </nav>
+    <div class="container">
+        <div class="big-box">
+            <h2>Big Box</h2>
+            <p>This box takes up the remaining space.</p>
         </div>
-
-        <div id="right-panel">
-            <h2>Control Panel</h2>
-            <div id="controls">
-                <button id="runCode">Run Code</button>
+        <div class="small-box">
+            <div class="top-box">
+                <h3>Top Box</h3>
+                <p>This box is 400px high.</p>
+            </div>
+            <div class="bottom-box">
+                <h3>Bottom Box</h3>
+                <p>This box fills the remaining space.</p>
             </div>
         </div>
     </div>
-
-    <!-- Include CodeMirror JS and Lua mode -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/lua/lua.min.js"></script>
-
-    <script>
-        // Initialize CodeMirror editor
-        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
-            mode: 'lua',
-            lineNumbers: true,
-            theme: 'eclipse', // Light mode theme
-        });
-
-        // Resize the editor to adapt to the available space
-        function resizeEditor() {
-            const editorContainer = document.getElementById('editor-container');
-            editor.setSize(editorContainer.offsetWidth, editorContainer.offsetHeight);
-        }
-
-        // Listen for window resize to adjust editor size dynamically
-        window.addEventListener('resize', resizeEditor);
-        resizeEditor(); // Initial resize
-
-        // Default Lua code snippet
-        const defaultLuaCode = `-- This is a default Lua snippet
-print("Hello from Lua!")
-for i = 1, 5 do
-    print("Number: " .. i)
-end`;
-
-        // Set default Lua code
-        editor.setValue(defaultLuaCode);
-
-        // Button event listener
-        document.getElementById('runCode').addEventListener('click', function() {
-            const code = editor.getValue();
-            alert("Lua code executed:\n" + code);
-        });
-
-        // Dropdown change event listener
-        document.getElementById('runtime-select').addEventListener('change', function() {
-            const selectedRuntime = this.value;
-            alert("Selected runtime: " + selectedRuntime);
-        });
-    </script>
 </body>
 </html>
