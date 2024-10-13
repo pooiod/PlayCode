@@ -62,10 +62,10 @@
             flex: 1;
             background-color: #bbb;
         }
-        /* Prevent resizing and enable scrollbars for CodeMirror */
+        /* Prevent CodeMirror from resizing its container */
         .CodeMirror {
             height: 100%;
-            overflow: auto;
+            overflow: auto; /* Add scrollbars if content overflows */
         }
     </style>
 </head>
@@ -106,13 +106,14 @@
                         lineNumbers: true,
                         mode: 'lua',
                         theme: 'material',
-                        lineWrapping: false,
-                        scrollbarStyle: "native"
+                        lineWrapping: true,
+                        viewportMargin: Infinity // Keeps the editor height stable
                     });
                     editor.setSize('100%', '100%');
                 }
             }
         }
+        // Show the code tab by default
         showTab('code');
     </script>
 </body>
