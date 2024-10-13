@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Layout Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <style>
         body {
             margin: 0;
@@ -42,6 +43,14 @@
         .tab:hover {
             background-color: #555;
         }
+        .active {
+            background-color: #666;
+        }
+        .big-box-content {
+            flex: 1;
+            padding: 1em;
+            display: none;
+        }
         .small-box {
             width: 300px;
             display: flex;
@@ -56,6 +65,10 @@
             flex: 1;
             background-color: #bbb;
         }
+        .editor {
+            height: 100%;
+            border: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -63,16 +76,42 @@
     <div class="container">
         <div class="big-box">
             <div class="tab-navbar">
-                <div class="tab">Tab 1</div>
-                <div class="tab">Tab 2</div>
-                <div class="tab">Tab 3</div>
+                <div class="tab active" onclick="showTab('code')">Code</div>
+                <div class="tab" onclick="showTab('tab2')">Tab 2</div>
+                <div class="tab" onclick="showTab('tab3')">Tab 3</div>
             </div>
-            <div class="big-box-content">Content Area</div>
+            <div class="big-box-content" id="code">
+                <textarea id="code-editor"></textarea>
+            </div>
+            <div class="big-box-content" id="tab2">Content for Tab 2</div>
+            <div class="big-box-content" id="tab3">Content for Tab 3</div>
         </div>
         <div class="small-box">
             <div class="top-box">Top Box (400px)</div>
             <div class="bottom-box">Bottom Box</div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/lua/lua.min.js"></script>
+    <script>
+        function showTab(tabId) {
+            const contents = document.querySelectorAll('.big-box-content');
+            contents.forEach(content => content.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+            lineNumbers: true,
+            mode: "lua",
+            theme: "default",
+            viewportMargin: Infinity
+        });
+
+        showTab('code');
+    </script>
 </body>
 </html>
