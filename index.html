@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlayCode</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/lesser-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/neo.min.css"> <!-- Light theme -->
     <style>
         body {
             margin: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
-            background-color: #ffffff; /* Light background for the page */
-            color: #333; /* Dark text for contrast */
         }
         .navbar {
-            background-color: #f0f0f0; /* Light navbar */
-            color: #333; /* Dark text */
+            background-color: #f8f8f8; /* Light background for navbar */
+            color: #333; /* Dark text for contrast */
             padding: 1em;
             text-align: center;
-            border-bottom: 1px solid #ccc; /* Light border */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
         }
         .container {
             display: flex;
@@ -28,50 +26,48 @@
         }
         .big-box {
             flex: 1;
-            background-color: #fafafa; /* Light background for the big box */
+            background-color: #f0f0f0;
             padding: 0;
             display: flex;
             flex-direction: column;
         }
         .tab-navbar {
             display: flex;
-            background-color: #e0e0e0; /* Lighter background for the tab navbar */
+            background-color: #eaeaea; /* Light background for tab navbar */
         }
         .tab {
             flex: 1;
             padding: 1em;
             text-align: center;
-            color: #333; /* Dark text */
+            color: #333; /* Dark text for contrast */
             cursor: pointer;
-            border: 1px solid transparent; /* Transparent border for spacing */
         }
         .tab:hover {
-            background-color: #d0d0d0; /* Hover effect */
+            background-color: #d0d0d0; /* Hover effect for tabs */
         }
         .big-box-content {
             flex: 1;
             display: none;
-            position: relative; /* Added for absolute positioning of CodeMirror */
+            position: relative;
         }
         .small-box {
             width: 300px;
             display: flex;
             flex-direction: column;
-            background-color: #e0e0e0; /* Light background for small box */
+            background-color: #e0e0e0;
         }
         .top-box {
             height: 400px;
-            background-color: #ccc; /* Light gray */
+            background-color: #ccc;
         }
         .bottom-box {
             flex: 1;
-            background-color: #bbb; /* Slightly darker gray */
+            background-color: #bbb;
         }
-        /* Ensure CodeMirror does not resize the container */
         .CodeMirror {
-            height: 100% !important; /* Make CodeMirror fill the container */
-            width: 100% !important; /* Ensure it doesn't push elements */
-            position: absolute; /* Position absolutely within the container */
+            height: 100% !important; 
+            width: 100% !important; 
+            position: absolute; 
             top: 0;
             left: 0;
         }
@@ -113,7 +109,7 @@
                     const editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
                         lineNumbers: true,
                         mode: 'lua',
-                        theme: 'lesser-dark', // Use a light-themed CodeMirror mode
+                        theme: 'neo', // Light theme
                         lineWrapping: true
                     });
                     editor.setSize('100%', '100%');
