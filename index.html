@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layout Example with Tabs</title>
+    <title>Layout Example</title>
     <style>
         body {
             margin: 0;
@@ -24,17 +24,18 @@
         .big-box {
             flex: 1;
             background-color: #f0f0f0;
-            padding: 1em;
+            padding: 0;
             display: flex;
             flex-direction: column;
         }
-        .tabs {
+        .tab-navbar {
             display: flex;
             background-color: #444;
-            margin-bottom: 1em;
         }
         .tab {
+            flex: 1;
             padding: 1em;
+            text-align: center;
             color: white;
             cursor: pointer;
         }
@@ -61,12 +62,12 @@
     <div class="navbar">Top Navbar</div>
     <div class="container">
         <div class="big-box">
-            <div class="tabs">
+            <div class="tab-navbar">
                 <div class="tab">Tab 1</div>
                 <div class="tab">Tab 2</div>
                 <div class="tab">Tab 3</div>
             </div>
-            <div>Content Area</div>
+            <div class="big-box-content">Content Area</div>
         </div>
         <div class="small-box">
             <div class="top-box">Top Box (400px)</div>
