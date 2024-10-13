@@ -25,18 +25,21 @@
             flex: 1;
             background-color: #f0f0f0;
             padding: 1em;
+            display: flex;
+            flex-direction: column;
+        }
+        .left-navbar {
+            background-color: #444;
+            color: white;
+            padding: 0.5em;
+            text-align: center;
+            margin-bottom: 1em;
         }
         .small-box {
             width: 300px;
             display: flex;
             flex-direction: column;
             background-color: #e0e0e0;
-        }
-        .inner-navbar {
-            background-color: #555;
-            color: white;
-            padding: 0.5em;
-            text-align: center;
         }
         .top-box {
             height: 400px;
@@ -51,9 +54,11 @@
 <body>
     <div class="navbar">Top Navbar</div>
     <div class="container">
-        <div class="big-box">Big Box</div>
+        <div class="big-box">
+            <div class="left-navbar">Left Box Navbar</div>
+            <div>Big Box Content</div>
+        </div>
         <div class="small-box">
-            <div class="inner-navbar">Second Navbar</div>
             <div class="top-box">Top Box (400px)</div>
             <div class="bottom-box">Bottom Box</div>
         </div>
