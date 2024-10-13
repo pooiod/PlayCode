@@ -47,6 +47,7 @@
         .big-box-content {
             flex: 1;
             display: none;
+            position: relative;
         }
         .small-box {
             width: 300px;
@@ -62,10 +63,10 @@
             flex: 1;
             background-color: #bbb;
         }
-        /* Prevent CodeMirror from resizing its container */
+        /* Adjust CodeMirror container */
         .CodeMirror {
             height: 100%;
-            overflow: auto; /* Add scrollbars if content overflows */
+            overflow: auto;
         }
     </style>
 </head>
@@ -106,8 +107,7 @@
                         lineNumbers: true,
                         mode: 'lua',
                         theme: 'material',
-                        lineWrapping: true,
-                        viewportMargin: Infinity // Keeps the editor height stable
+                        lineWrapping: false
                     });
                     editor.setSize('100%', '100%');
                 }
