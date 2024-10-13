@@ -47,7 +47,7 @@
         .big-box-content {
             flex: 1;
             display: none;
-            overflow: hidden;
+            position: relative; /* Added for absolute positioning of CodeMirror */
         }
         .small-box {
             width: 300px;
@@ -63,9 +63,13 @@
             flex: 1;
             background-color: #bbb;
         }
+        /* Ensure CodeMirror does not resize the container */
         .CodeMirror {
-            height: 100%; /* Fill the available height */
-            width: 100%; /* Fill the available width */
+            height: 100% !important; /* Make CodeMirror fill the container */
+            width: 100% !important; /* Ensure it doesn't push elements */
+            position: absolute; /* Position absolutely within the container */
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
@@ -108,7 +112,7 @@
                         theme: 'material',
                         lineWrapping: true
                     });
-                    editor.setSize('100%', '100%'); // Make sure it fills its parent
+                    editor.setSize('100%', '100%');
                 }
             }
         }
