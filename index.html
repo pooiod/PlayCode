@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layout Example with CodeMirror</title>
+    <title>PlayCode</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material.min.css">
     <style>
@@ -47,6 +47,7 @@
         .big-box-content {
             flex: 1;
             display: none;
+            overflow: hidden;
         }
         .small-box {
             width: 300px;
@@ -61,6 +62,12 @@
         .bottom-box {
             flex: 1;
             background-color: #bbb;
+        }
+        /* Ensure the CodeMirror editor doesn't affect the size of its container */
+        .CodeMirror {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Prevents resizing based on content */
         }
     </style>
 </head>
