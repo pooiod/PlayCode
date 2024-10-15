@@ -7,7 +7,7 @@
   ],
   "plugins": [],
   "theme": "themes/default.css",
-  "console": "plugins/eruda.js",
+  "console": "//pooiod7.neocities.org/projects/CODE-Playground/plugins/eruda.js",
   "snips": [
     {
       "name": "console.log()",
